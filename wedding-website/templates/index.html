@@ -1,0 +1,75 @@
+$def with (sections)
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Katie and Nick's Wedding</title>
+  </head>
+
+  <body>
+    <LINK href="static/css/style.css" rel="stylesheet" type="text/css">
+    <LINK href="static/bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="static/css/jsquares.css" type="text/css" media="all" />
+
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script src="static/bootstrap/js/bootstrap.min.js"></script>
+    <script src="static/js/jquery.masonry.js"></script>
+    <script src="js/jquery.jsquares.min.js" type="text/javascript"></script>
+
+    <script src="static/js/wedding_scripts.js"></script>
+
+
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+           <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <div class="nav-collapse collapse">
+            <ul class="nav">
+              <li><a href="#home">Events</a></li>
+              <li><a href="#us">Attractions</a></li>
+              <li><a href="#where">Maps</a></li>
+              <li><a href="#schedule">Accomodations</a></li>
+              <li><a href="#stay">Registry</a></li>
+              <li><a href="#play">RSVP</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--
+    <div id="container" class="container">
+      <div class="item doublewidth">Events Page</div>
+      <div class="item doublewidth">Things to Do in Stratford and St. Marys</div>
+      <div class="item singlewidth">Maps Page</div>
+      <div class="item singlewidth">Photo #1</div>
+      <div class="item doublewidth">Accommodations</div>
+      <div class="item singlewidth">Registry</div>
+      <div class="item doublewidth">Photo #2</div>
+      <div class="item singlewidth">RSVP Page</div>
+    </div>
+    -->
+    <div id="js-container">	
+      $for section in sections:
+      <div class="item js-image $section.image_size_class">		
+        <a href="#wolf!"><img class="js-small-image" src="static/img/$section.image_name"/></a>
+        <div class="js-small-caption">
+          <span>$section.caption</span>
+        </div>
+        <div class="js-overlay-caption-content">
+          <h4>You can't hide from wolf boy.</h4>
+          <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. In elementum arcu non orci fermentum nec suscipit neque dignissim... <a href="#">Read more &raquo;</a>
+          </p>
+        </div>
+      </div>
+    </div>
+
+
+
+  </body>
+</html>
+
