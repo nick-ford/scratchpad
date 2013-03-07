@@ -1,0 +1,29 @@
+$def with (responses)
+
+<p>
+Thanks for responding via our online RSVP form.
+<br>
+<br>
+Listed below is a summary of your response:
+<table border="1" cellspacing="0" cellpadding="5">
+  <thead>
+    <tr>
+      <th>Guest</th>
+      <th>Attending</th>
+      <th>Meal Choice</th>
+      <th>Notes</th>
+    </tr>
+  </thead>
+  <tbody>
+    $for response in responses:
+    <tr>
+      <td>$response['first_name'] $response['last_name']</td>
+      <td>$response['attending']</td>
+      <td>$response['meal_choice']</td>
+      <td>$response['notes']</td>
+    </tr>
+  </tbody>
+</table>
+<br>
+Please do not hesitate to contact us at <a href="mailto:nickandkatie2013@gmail.com">nickandkatie2013@gmail.com</a> if you have any concerns.
+</p>
