@@ -1,42 +1,49 @@
 $def with (partyName, guests, email_form)
 
+<p>
+Please enter your preferences below:
+<br>
+</p>
 $code:
   num_guests = 0
-<strong>The $partyName Party!</strong>
-
 <form action="/rsvp" method="post">
 <input type='hidden', name='party_name', value='$partyName'/>
-<table>
-  <tr>
-    <td>Attending</td>
-    <td>Name</td>
-    <td>Meal Choice</td>
-    <td>Meal Notes</td>
-  </tr>
-$for g in guests:
-  <tr>
-    <td>
-      <select name="attending_$num_guests">
-        <option value="Yes">Yes</option>
-        <option value="No">No</option>
-      </select>
-    </td>
-    <td>$g.firstName $g.lastName
-      <input type='hidden' name='first_name_$num_guests' value='$g.firstName'/>
-      <input type='hidden' name='last_name_$num_guests' value='$g.lastName'/>
-    </td>
-    <td>
-      <select name="meal_choice_$num_guests">
-        <option value="Chicken">Chicken</option>
-        <option value="Beef">Beef</option>
-        <option value="Veg">Vegetarian</option>
-      </select>
-    </td>
-    <td><input type="text" name="notes_$num_guests"></td>
-  </tr>    
-  $code:
-    num_guests = num_guests + 1
+<table border="0" cellspacing="0" cellpadding="5">
+  <thead>
+    <tr>
+      <th>Attending</th>
+      <th>Name</th>
+      <th>Meal Choice</th>
+      <th>Meal Notes</th>
+    </tr>
+  </thead>
+  <tbody>
+  $for g in guests:
+    <tr>
+      <td>
+        <select name="attending_$num_guests">
+          <option value="Yes">Yes</option>
+          <option value="No">No</option>
+        </select>
+      </td>
+      <td>$g.firstName $g.lastName
+        <input type='hidden' name='first_name_$num_guests' value='$g.firstName'/>
+        <input type='hidden' name='last_name_$num_guests' value='$g.lastName'/>
+      </td>
+      <td>
+        <select name="meal_choice_$num_guests">
+          <option value="Chicken">Chicken</option>
+          <option value="Beef">Beef</option>
+          <option value="Veg">Vegetarian</option>
+        </select>
+      </td>
+      <td><input type="text" name="notes_$num_guests"></td>
+    </tr>    
+    $code:
+      num_guests = num_guests + 1
+  </tbody>
 </table>  
+<br>
 <input type='hidden', name='num_guests', value='$num_guests'/>
 <input type='hidden', name='party_name', value='$partyName'/>
 $:email_form.render()

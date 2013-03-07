@@ -1,5 +1,5 @@
 CREATE TABLE guests (
-  id integer primary key,
+  id integer,
   partyName text,
   guestOrder integer,
   firstName text collate nocase,

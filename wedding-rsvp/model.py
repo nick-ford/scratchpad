@@ -8,14 +8,11 @@ def get_guest(firstName, lastName):
 def get_guests(partyName):
   return db.select('guests', where='partyName=$partyName', order='guestOrder', vars=locals())
 
-def update_guest_response(first_name, last_name, attendance, meal_choice, email_address, food_notes=''):
-
-  db.insert('responses', firstName=first_name,
-                         lastName=last_name,
-                         attending=('t' if attendance=='Yes' else 'f'),
-                         mealchoice=meal_choice,
-                         notes=food_notes,
-                         email=email_address)
-
-
-
+def update_guest_responses(responses):
+  for response in responses:
+    db.insert('responses', firstName=response['first_name'],
+                           lastName=response['last_name'],
+                           attending=('t' if response['attending']=='Yes' else 'f'),
+                           mealchoice=response['meal_choice'],
+                           notes=response['notes'],
+                           email=response['email_address'])

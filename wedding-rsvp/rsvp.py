@@ -14,6 +14,7 @@ urls = (
 
 ### Templates
 render = web.template.render('templates', base='base')
+email_render = web.template.render('templates')
 
 familyIdForm = web.form.Form(
   web.form.Textbox('firstName',
@@ -69,26 +70,23 @@ class Rsvp:
 
     num_guests = int(user_data.num_guests)
 
-    for guest_num in range(0, num_guests):
-      model_gdata.update_guest_response(party_name = user_data['party_name'],
-                                  first_name = user_data['first_name_%d' % guest_num],
-                                  last_name = user_data['last_name_%d' % guest_num],
-                                  attending = user_data['attending_%d' % guest_num],
-                                  meal_choice = user_data['meal_choice_%d' % guest_num],
-                                  notes = user_data['notes_%d' % guest_num],
-                                  email_address = user_data['email'])
+    responses = [ {'party_name': user_data['party_name'],
+                   'first_name': user_data['first_name_%d' % guest_num],
+                   'last_name': user_data['last_name_%d' % guest_num],
+                   'attending': user_data['attending_%d' % guest_num],
+                   'meal_choice': user_data['meal_choice_%d' % guest_num],
+                   'notes': user_data['notes_%d' % guest_num],
+                   'email_address': user_data['email']} for guest_num in range(0, num_guests) ]
 
-      model.update_guest_response( first_name = user_data['first_name_%d' % guest_num],
-                                   last_name = user_data['last_name_%d' % guest_num],
-                                   attendance = user_data['attending_%d' % guest_num],
-                                   meal_choice = user_data['meal_choice_%d' % guest_num],
-                                   food_notes = user_data['notes_%d' % guest_num],
-                                   email_address = user_data['email'])
+    # shove data into the database
+    model.update_guest_responses(responses)
 
+    # shove the responses into google spreadsheet
+    model_gdata.update_guest_responses(responses)
 
-    web.sendmail('nickandkatie2013@gmail.com', user_data['email'], 'Thanks for the RSVP!', 'Here is a summary:')
+    # send an email to the guest to let them know they successfully RSVP-ed
+    web.sendmail('nickandkatie2013@gmail.com', user_data['email'], 'Thanks for responding!', email_render.thanks_email(responses), headers={'Content-Type':'text/html;charset=utf-8'})
     return render.thanks()
-
 
 
 app = web.application(urls, globals())
