@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 """ Katie's complicated RSVP in web.py 0.3 """
 import web
 import model
@@ -18,15 +20,15 @@ email_render = web.template.render('templates')
 
 familyIdForm = web.form.Form(
   web.form.Textbox('firstName',
-    web.form.notnull, description="First Name"),
+    web.form.notnull, description="First Name", class_="text-input"),
   web.form.Textbox('lastName',
-    web.form.notnull, description="Last Name"),
+    web.form.notnull, description="Last Name", class_="text-input"),
   )
 
 vemail = web.form.regexp(r".*@.*", "must be a valid email address")
 
 mainForm = web.form.Form(
-    web.form.Textbox('email', vemail, decription="Email")
+    web.form.Textbox('email', vemail, decription="Email", class_="text-input")
     )
 
 web.config.smtp_server = 'smtp.gmail.com'
@@ -63,20 +65,25 @@ class Rsvp:
     user_data = web.input()
     email_form = mainForm()
 
+    num_guests = int(user_data.num_guests)
+
+    responses = [ {'partyName': user_data['party_name'],
+                   'firstName': user_data['first_name_%d' % guest_num],
+                   'lastName': user_data['last_name_%d' % guest_num],
+                   'attending': user_data['attending_%d' % guest_num],
+                   'mealChoice': user_data['meal_choice_%d' % guest_num],
+                   'notes': user_data['notes_%d' % guest_num],
+                   'emailAddress': user_data['email']} for guest_num in range(0, num_guests) ]
+
     if not email_form.validates():
       # ugh, stupid people, we have to go back now...
       guests = model.get_guests(user_data.party_name)
-      return render.rsvp(user_data.party_name, guests, email_form)
+      return render.rsvp(user_data.party_name, responses, email_form)
 
-    num_guests = int(user_data.num_guests)
+    yay = False
+    for r in responses:
+      yay = True if r['attending']=='Yes' else yay
 
-    responses = [ {'party_name': user_data['party_name'],
-                   'first_name': user_data['first_name_%d' % guest_num],
-                   'last_name': user_data['last_name_%d' % guest_num],
-                   'attending': user_data['attending_%d' % guest_num],
-                   'meal_choice': user_data['meal_choice_%d' % guest_num],
-                   'notes': user_data['notes_%d' % guest_num],
-                   'email_address': user_data['email']} for guest_num in range(0, num_guests) ]
 
     # shove data into the database
     model.update_guest_responses(responses)
@@ -85,8 +92,12 @@ class Rsvp:
     model_gdata.update_guest_responses(responses)
 
     # send an email to the guest to let them know they successfully RSVP-ed
-    web.sendmail('nickandkatie2013@gmail.com', user_data['email'], 'Thanks for responding!', email_render.thanks_email(responses), headers={'Content-Type':'text/html;charset=utf-8'})
-    return render.thanks()
+    web.sendmail('nickandkatie2013@gmail.com', user_data['email'], 'Thanks for responding!', email_render.thanks_email(responses, yay), headers={'Content-Type':'text/html;charset=utf-8'})
+
+    # send an email to ourselves
+    web.sendmail('nickandkatie2013@gmail.com', 'nickandkatie2013@gmail.com', 'RSVP: %s' % user_data['party_name'], email_render.thanks_email(responses, yay), headers={'Content-Type':'text/html;charset=utf-8'})
+
+    return render.thanks(yay)
 
 
 app = web.application(urls, globals())

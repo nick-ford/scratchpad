@@ -1,7 +1,7 @@
 $def with (form, found, firstname, lastname)
 
+$if not found: <p class="error">Sorry, we did not recognize the name: $firstname $lastname.<br>Please try again or email us at <a href='mailto:nickandkatie2013@gmail.com'>nickandkatie2013@gmail.com</a></p>
+$else: <p>Please enter your name below so we can look up your party information!</p>
 <form name="main" method="post"> 
-  $if not found: <p class="error">Sorry, we did not recognize the name: $firstname $lastname.
-  <br>Please try again or email us at <a href='mailto:nickandkatie2013@gmail.com'>nickandkatie2013@gmail.com</a></p>
-$:form.render()
-<input type="submit" />    </form>
+  $:form.render()
+<input type="submit" value="Find Party!" class="submit-input"/>    </form>

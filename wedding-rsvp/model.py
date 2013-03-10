@@ -10,9 +10,9 @@ def get_guests(partyName):
 
 def update_guest_responses(responses):
   for response in responses:
-    db.insert('responses', firstName=response['first_name'],
-                           lastName=response['last_name'],
+    db.insert('responses', firstName=response['firstName'],
+                           lastName=response['lastName'],
                            attending=('t' if response['attending']=='Yes' else 'f'),
-                           mealchoice=response['meal_choice'],
+                           mealchoice=response['mealChoice'],
                            notes=response['notes'],
-                           email=response['email_address'])
+                           email=response['emailAddress'])

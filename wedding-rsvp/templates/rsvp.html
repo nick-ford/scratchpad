@@ -11,33 +11,61 @@ $code:
 <table border="0" cellspacing="0" cellpadding="5">
   <thead>
     <tr>
-      <th>Attending</th>
-      <th>Name</th>
-      <th>Meal Choice</th>
-      <th>Meal Notes</th>
+      <th align="left">Attending</th>
+      <th align="left">Name</th>
+      <th align="left">Meal Choice</th>
+      <th align="left">Dietary Notes</th>
     </tr>
   </thead>
   <tbody>
+
   $for g in guests:
+    $code:
+      selected_yes = 'Selected'
+      selected_no = ''
+      selected_chicken = 'Selected'
+      selected_beef = ''
+      selected_veg = ''
+      value_notes = ''
+
+    $if "attending" in g:
+      $code:
+        selected_yes = 'Selected' if (g['attending']=='Yes') else ''
+        selected_no = 'Selected' if (g['attending']=='No') else ''
+
+    $if "mealChoice" in g:
+      $code:
+        selected_chicken = 'Selected' if (g['mealChoice']=='Chicken') else ''
+        selected_beef = 'Selected' if (g['mealChoice']=='Beef') else ''
+        selected_veg = 'Selected' if (g['mealChoice']=='Veg') else ''
+
+    $if "notes" in g:
+      $code:
+        value_notes = g['notes']
+
     <tr>
       <td>
-        <select name="attending_$num_guests">
-          <option value="Yes">Yes</option>
-          <option value="No">No</option>
+        <select name="attending_$num_guests", class="select-input">
+            <option value="Yes" $selected_yes>Yes</option>
+            <option value="No" $selected_no>No</option>
         </select>
       </td>
-      <td>$g.firstName $g.lastName
-        <input type='hidden' name='first_name_$num_guests' value='$g.firstName'/>
-        <input type='hidden' name='last_name_$num_guests' value='$g.lastName'/>
+      <td>$g['firstName'] $g['lastName']
+        <input type='hidden' name='first_name_$num_guests' value="$g['firstName']"/>
+        <input type='hidden' name='last_name_$num_guests' value="$g['lastName']"/>
       </td>
       <td>
-        <select name="meal_choice_$num_guests">
-          <option value="Chicken">Chicken</option>
-          <option value="Beef">Beef</option>
-          <option value="Veg">Vegetarian</option>
+        <select name="meal_choice_$num_guests", class="select-input">
+        $if (g['firstName']=='Stacey' and g['lastName']=='Roeterink'):
+          <option value="Chicken Fingers">Chicken Fingers</option>
+          <option value="Chicken Fingers">Moldy Cheese and Spinach</option>
+        $else:
+          <option value="Chicken" $selected_chicken>Chicken</option>
+          <option value="Beef" $selected_beef>Beef</option>
+          <option value="Veg" $selected_veg>Vegetarian</option>
         </select>
       </td>
-      <td><input type="text" name="notes_$num_guests"></td>
+      <td><input type="text" name="notes_$num_guests" class="text-input" value="$value_notes"></td>
     </tr>    
     $code:
       num_guests = num_guests + 1
@@ -47,5 +75,5 @@ $code:
 <input type='hidden', name='num_guests', value='$num_guests'/>
 <input type='hidden', name='party_name', value='$partyName'/>
 $:email_form.render()
-<input type="submit" value="Submit Choices"/>
+<input type="submit" value="Submit Response" class="submit-input"/>
 </form>

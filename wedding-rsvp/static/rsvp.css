@@ -1,0 +1,38 @@
+.submit-input {
+  /* border: 1px solid #ddd8d1;
+  border-radius: 3px;
+  border-color: #7C7C7C #C3C3C3 #DDDDDD; */
+  padding: 6px !important;
+}
+
+.text-input, .select-input {
+  font-size: 13px;
+  color: #878787;
+  background: #fff;
+  border: 1px solid #ddd8d1;
+  padding: 8px 4px 5px !important;
+  line-height: 1;
+  border-radius: 3px;
+  border-color: #7C7C7C #C3C3C3 #DDDDDD;
+  border-style: solid;
+  border-width: 1px;
+  padding: 4px !important;
+}
+
+.form-label {
+  font-size: 16px;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 13px;
+  color: #878787;
+  text-align: left;
+}
+
+p {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  color: #878787;
+  text-align: left;
+}

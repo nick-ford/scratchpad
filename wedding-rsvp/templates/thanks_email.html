@@ -1,10 +1,12 @@
-$def with (responses)
+$def with (responses, yay)
 
 <p>
-Thanks for responding via our online RSVP form.
+Thanks for responding via our online RSVP form. <br>
+$if yay: We are excited that you will be joining us on the day of our wedding!
+$else: We are sorry you won't be able to make it.
 <br>
 <br>
-Listed below is a summary of your response:
+Here is a summary of the guests in your party:
 <table border="1" cellspacing="0" cellpadding="5">
   <thead>
     <tr>
@@ -17,13 +19,13 @@ Listed below is a summary of your response:
   <tbody>
     $for response in responses:
     <tr>
-      <td>$response['first_name'] $response['last_name']</td>
+      <td>$response['firstName'] $response['lastName']</td>
       <td>$response['attending']</td>
-      <td>$response['meal_choice']</td>
+      <td>$response['mealChoice']</td>
       <td>$response['notes']</td>
     </tr>
   </tbody>
 </table>
 <br>
-Please do not hesitate to contact us at <a href="mailto:nickandkatie2013@gmail.com">nickandkatie2013@gmail.com</a> if you have any concerns.
+If you have any questions, feel free to email us at <a href="mailto:nickandkatie2013@gmail.com">nickandkatie2013@gmail.com</a> if you have any concerns.
 </p>
